@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Archived scripts kept for provenance only.
+    "scripts/legacy/**",
+    "data/**",
+    "dist/**",
   ]),
 ]);
 

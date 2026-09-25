@@ -1,0 +1,41 @@
+name: Dataset release
+
+# Push a tag such as data-v2026.09.25 to publish the built dataset
+# (narrators, hadith with chain graphs, edges, build checks) as release files.
+on:
+  push:
+    tags: ["data-v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run data:build
+      - run: npm run data:export
+
+      - name: Package
+        run: |
+          cd dist
+          zip -r -9 "sahih-explorer-dataset-${GITHUB_REF_NAME}.zip" dataset
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "dist/sahih-explorer-dataset-${GITHUB_REF_NAME}.zip" \
+            dist/dataset/meta.json \
+            --title "Dataset $GITHUB_REF_NAME" \
+            --notes-file dist/dataset/README.md

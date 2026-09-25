@@ -1,125 +1,76 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Outfit, Amiri, Noto_Naskh_Arabic } from "next/font/google";
-import "./globals.css";
-import NextTopLoader from 'nextjs-toploader';
+import { notFound } from "next/navigation";
+import { Amiri, Noto_Naskh_Arabic, Outfit } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { Providers } from "@/components/site/Providers";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { CommandPalette } from "@/components/search/CommandPalette";
+import { isRtl } from "@/lib/l10n";
+import { SITE_URL } from "@/lib/site";
+import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
-  display: "swap",
-});
-
-const amiri = Amiri({
-  subsets: ["arabic"],
-  weight: ["400", "700"],
-  variable: "--font-amiri",
-  display: "swap",
-});
-
-const notoNaskh = Noto_Naskh_Arabic({
-  subsets: ["arabic"],
-  weight: ["400", "700"],
-  variable: "--font-noto-naskh",
-  display: "swap",
-});
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", display: "swap" });
+const amiri = Amiri({ subsets: ["arabic"], weight: ["400", "700"], variable: "--font-amiri", display: "swap" });
+const naskh = Noto_Naskh_Arabic({ subsets: ["arabic"], weight: ["400", "600", "700"], variable: "--font-naskh", display: "swap" });
 
 export const viewport: Viewport = {
-  themeColor: "#f59e0b",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#faf7f0" },
+    { media: "(prefers-color-scheme: dark)", color: "#1c1a16" },
+  ],
 };
-
-export const metadata: Metadata = {
-  title: "Sahih Explorer - Islamic Scholar & Hadith Database",
-  description: "Explore the lives, family trees, and authentic narrations of Islamic scholars and companions through an interactive visualization platform.",
-  manifest: "/manifest.json",
-  icons: {
-    apple: "/icons/icon-512x512.png",
-  },
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "default",
-    title: "Sahih Explorer",
-  },
-};
-
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { routing } from '../../i18n/routing';
-import { ScholarLoaderProvider } from '@/components/providers/ScholarLoaderProvider';
 
 export function generateStaticParams() {
-  return routing.locales.map((locale) => ({locale}));
+  return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function RootLayout({
-  children,
-  params
-}: {
-  children: React.ReactNode;
-  params: Promise<{locale: string}>;
-}) {
-  // Ensure that the incoming `locale` is valid
-  const {locale} = await params;
-  if (!routing.locales.includes(locale as any)) {
-    notFound();
-  }
-  
-  // Enable static rendering
-  setRequestLocale(locale);
- 
-  // Providing all messages to the client
-  // side is the easiest way to get started
-  const messages = await getMessages();
- 
-  // Determine direction
-  const dir = locale === 'ar' || locale === 'ckb' ? 'rtl' : 'ltr';
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Meta" });
+  return {
+    metadataBase: new URL(SITE_URL),
+    title: { default: t("title"), template: `%s · ${t("siteName")}` },
+    description: t("description"),
+    manifest: "/manifest.json",
+    icons: { apple: "/icons/icon-192x192.png" },
+    openGraph: { siteName: t("siteName"), type: "website", locale },
+  };
+}
 
-  // Select font based on locale
-  let fontClass = outfit.className;
-  let fontVar = outfit.variable;
-  if (locale === 'ar') {
-    fontClass = amiri.className;
-    fontVar = amiri.variable;
-  } else if (locale === 'ckb') {
-    fontClass = notoNaskh.className;
-    fontVar = notoNaskh.variable;
-  }
+export default async function LocaleLayout({ children, params }: { children: React.ReactNode; params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
+  setRequestLocale(locale);
+  const t = await getTranslations("Common");
 
   return (
-    <html lang={locale} dir={dir}>
-      <body
-        className={`${fontClass} ${fontVar} ${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <NextTopLoader 
-          color="#D4AF37"
-          initialPosition={0.08}
-          crawlSpeed={200}
-          height={3}
-          crawl={true}
-          showSpinner={true}
-          easing="ease"
-          speed={200}
-          shadow="0 0 10px #D4AF37,0 0 5px #D4AF37"
-        />
-        <NextIntlClientProvider messages={messages}>
-          <ScholarLoaderProvider>
-            {children}
+    <html lang={locale} dir={isRtl(locale) ? "rtl" : "ltr"} suppressHydrationWarning>
+      <body className={`${outfit.variable} ${amiri.variable} ${naskh.variable} min-h-screen`}>
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground">
+          {t("skipToContent")}
+        </a>
+        <NextTopLoader color="var(--gold)" height={3} showSpinner={false} />
+        <NextIntlClientProvider>
+          <Providers>
+            <SiteHeader />
+            <main id="main">{children}</main>
+            <SiteFooter />
+            <CommandPalette />
+          </Providers>
+        </NextIntlClientProvider>
+        {/* Their scripts are served by Vercel only; elsewhere they would 404. */}
+        {process.env.VERCEL && (
+          <>
             <Analytics />
             <SpeedInsights />
-          </ScholarLoaderProvider>
-        </NextIntlClientProvider>
+          </>
+        )}
       </body>
     </html>
   );
