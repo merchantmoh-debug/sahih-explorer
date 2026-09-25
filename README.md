@@ -4,6 +4,10 @@ Follow every hadith of the six canonical collections back through its
 narrators. See where chains across collections meet, and read each
 narrator's record: grade, generation, dates, teachers and students.
 
+**Status: beta.** The data still needs checking. Family links are believed
+correct, but some hadith chains need verification and fixing. The notes on
+each chain flag many of these, and every page has a "Report an error" link.
+
 The site is for students of hadith, teachers and da'wah writers who need a
 chain they can show, and developers who want isnad data in their own tools.
 It is a study aid. Gradings shown are those published by the scholars named
