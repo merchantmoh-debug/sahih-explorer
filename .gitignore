@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated data (npm run data:build) and download caches
+/data/build/
+/.cache/
+/dist/
