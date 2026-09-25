@@ -1,232 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Amiri:wght@400;700&display=swap");
 @import "tailwindcss";
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-amiri: "Amiri", serif;
-
-  --color-gold-400: #ffd700;
-  --color-gold-500: #d4af37;
-  --color-gold-600: #aa8c2c;
-}
-
-:root {
-  --gold: #d4af37;
-  --gold-light: #f4e5c2;
-  --gold-dark: #9d8028;
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-* {
-  scroll-behavior: smooth;
-}
-
-body {
-  background-color: #ffffff; /* or any color */
-  background-attachment: scroll;
-  @media (min-width: 768px) {
-    background-attachment: fixed;
-  }
-  font-family:
-    "Inter",
-    -apple-system,
-    BlinkMacSystemFont,
-    sans-serif;
-  overflow-x: hidden;
-  background-image: radial-gradient(
-    rgba(212, 175, 55, 0.45) 1.2px,
-    transparent 1.5px
-  );
-  background-size: 24px 24px;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--muuted-foreground);
-  border-radius: 5px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--primary);
-}
-
-/* Selection */
-::selection {
-  background-color: rgba(212, 175, 55, 0.3);
-  color: inherit;
-}
-
-/* Animated gradient background */
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient {
-  background-size: 200% 200%;
-}
-
-@media (min-width: 768px) {
-  .animate-gradient {
-    animation: gradient-shift 15s ease infinite;
-  }
-}
-
-/* Glass morphism effect */
-.glass {
-  background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-@media (min-width: 768px) {
-  .glass {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-  }
-}
-
-.dark .glass {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@media (min-width: 768px) {
-  .dark .glass {
-    background: rgba(15, 23, 42, 0.4);
-    backdrop-filter: blur(20px);
-  }
-}
-
-/* Glow effects */
-.glow-gold {
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-}
-
-@media (min-width: 768px) {
-  .glow-gold {
-    box-shadow:
-      0 0 20px rgba(212, 175, 55, 0.3),
-      0 0 40px rgba(212, 175, 55, 0.1);
-  }
-}
-
-.glow-gold-strong {
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-}
-
-@media (min-width: 768px) {
-  .glow-gold-strong {
-    box-shadow:
-      0 0 30px rgba(212, 175, 55, 0.5),
-      0 0 60px rgba(212, 175, 55, 0.2),
-      0 0 90px rgba(212, 175, 55, 0.1);
-  }
-}
-
-/* Text gradients */
-.text-gradient-gold {
-  background: linear-gradient(135deg, #f4e5c2 0%, #d4af37 50%, #9d8028 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Floating animation */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Shimmer effect */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.shimmer {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
 @theme inline {
+  /* Outfit has no Arabic glyphs; names in Arabic fall through to Naskh. */
+  --font-sans: var(--font-outfit), var(--font-naskh), ui-sans-serif, system-ui, sans-serif;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -245,66 +30,131 @@ body {
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+
+  --color-band-prophet: var(--band-prophet);
+  --color-band-top: var(--band-top);
+  --color-band-good: var(--band-good);
+  --color-band-fair: var(--band-fair);
+  --color-band-weak: var(--band-weak);
+  --color-band-severe: var(--band-severe);
+  --color-band-none: var(--band-none);
+}
+
+:root {
+  --radius: 0.75rem;
+  --background: oklch(0.985 0.006 85);
+  --foreground: oklch(0.2 0.015 60);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.015 60);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.015 60);
+  --primary: oklch(0.55 0.12 70);
+  --primary-foreground: oklch(0.99 0.005 85);
+  --secondary: oklch(0.95 0.015 85);
+  --secondary-foreground: oklch(0.3 0.03 60);
+  --muted: oklch(0.955 0.01 85);
+  --muted-foreground: oklch(0.48 0.02 60);
+  --accent: oklch(0.94 0.03 85);
+  --accent-foreground: oklch(0.3 0.04 60);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.9 0.015 80);
+  --input: oklch(0.9 0.015 80);
+  --ring: oklch(0.7 0.12 75);
+  --gold: oklch(0.66 0.13 78);
+  --gold-soft: oklch(0.93 0.05 85);
+
+  --band-prophet: oklch(0.66 0.14 78);
+  --band-top: oklch(0.56 0.13 155);
+  --band-good: oklch(0.58 0.1 190);
+  --band-fair: oklch(0.7 0.15 70);
+  --band-weak: oklch(0.64 0.17 45);
+  --band-severe: oklch(0.55 0.2 25);
+  --band-none: oklch(0.62 0.02 260);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
+  --background: oklch(0.17 0.01 70);
+  --foreground: oklch(0.95 0.01 85);
+  --card: oklch(0.21 0.012 70);
+  --card-foreground: oklch(0.95 0.01 85);
+  --popover: oklch(0.21 0.012 70);
+  --popover-foreground: oklch(0.95 0.01 85);
+  --primary: oklch(0.78 0.12 80);
+  --primary-foreground: oklch(0.2 0.02 70);
+  --secondary: oklch(0.27 0.015 70);
+  --secondary-foreground: oklch(0.93 0.01 85);
+  --muted: oklch(0.25 0.012 70);
+  --muted-foreground: oklch(0.72 0.02 80);
+  --accent: oklch(0.29 0.03 75);
+  --accent-foreground: oklch(0.95 0.02 85);
+  --destructive: oklch(0.7 0.19 22);
+  --border: oklch(1 0 0 / 11%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --ring: oklch(0.7 0.12 80);
+  --gold: oklch(0.78 0.12 80);
+  --gold-soft: oklch(0.3 0.05 80);
+
+  --band-prophet: oklch(0.8 0.13 82);
+  --band-top: oklch(0.72 0.13 155);
+  --band-good: oklch(0.74 0.1 190);
+  --band-fair: oklch(0.8 0.14 75);
+  --band-weak: oklch(0.74 0.15 50);
+  --band-severe: oklch(0.7 0.18 25);
+  --band-none: oklch(0.7 0.02 260);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-behavior: smooth;
+  }
+  /* Let grid items shrink below their content, as flex items do with
+     min-w-0, so truncated names cannot push a one-column grid off screen. */
+  .grid > * {
+    min-width: 0;
+  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  /* The next/font variables are set on <body>, so they are referenced here
+     directly: a theme variable would resolve them at :root, where they are
+     undefined. */
+  :lang(ar) body,
+  :lang(ckb) body {
+    font-family: var(--font-naskh), var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
+  }
+  ::selection {
+    background-color: color-mix(in oklch, var(--gold) 30%, transparent);
   }
 }
 
 @layer utilities {
+  /* Classical naskh for hadith text. */
+  .hadith-ar {
+    font-family: var(--font-amiri), serif;
+    font-size: 1.35rem;
+    line-height: 2.2;
+    direction: rtl;
+    text-align: start;
+  }
   .font-amiri {
-    font-family: "Amiri", serif;
+    font-family: var(--font-amiri), serif;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .bg-dots {
+    background-image: radial-gradient(color-mix(in oklch, var(--gold) 35%, transparent) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+  }
+}
+
+@media print {
+  header, footer, nav, .no-print {
+    display: none !important;
   }
 }
